@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      History
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let record of recordsArray; let i = index;">
+      <ion-item>
+        <h2>{{ record.date | date }}</h2>
+        <h3>descriptrion : {{ record.description }}</h3>
+        <h3 *ngIf="i > 0">Number of days used : {{ calculateNumberOfDaysUsed(record.date, recordsArray[i-1].date) }}</h3>
+        <h3 *ngIf="i === 0">Number of days used : {{ calculateNumberOfDaysUsed(record.date, null) }}</h3>
+      </ion-item>
+      <ion-item-options>
+          <button ion-button color="danger" icon-start (click)="deleteRecord(i)">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
