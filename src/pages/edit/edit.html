@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Edit
+      {{ 'EDIT' | translate }}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -9,15 +9,15 @@
 <ion-content padding>
   <ion-list>
     <ion-item>
-      <ion-label>Replacement Date</ion-label>
-      <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="date"></ion-datetime>
+      <ion-label>{{ 'REPLACEMENT_DATE' | translate }}</ion-label>
+      <ion-datetime displayFormat="{{ 'DATE_FORMAT' | translate }}" [(ngModel)]="date"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label>Description</ion-label>
-      <ion-textarea placeholder="Put the product name or some remarks" [(ngModel)]="description"></ion-textarea>
+      <ion-label>{{ 'DESCRIPTION' | translate }}</ion-label>
+      <ion-textarea placeholder="{{ DESCRIPTION_PLACEHOLDER }}" [(ngModel)]="description"></ion-textarea>
     </ion-item>
   </ion-list>
   <div padding>
-    <button ion-button block (click)="addRazorBladeData()">Record</button>
+    <button ion-button block (click)="addRazorBladeData()">{{ 'RECORD' | translate }}</button>
   </div>
 </ion-content>

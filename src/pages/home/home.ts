@@ -62,8 +62,6 @@ export class HomePage {
 
   // 画面遷移時にデータを取得する
   ionViewWillEnter() {
-    console.log('this.availableLangs');
-    console.log(this.availableLangs);
     this.razorBladesLocalStorageService.getMostRecentRecord().then((val) => {
       this.date = val.date;
       this.description = val.description;

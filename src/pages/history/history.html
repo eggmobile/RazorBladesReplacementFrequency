@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      History
+      {{ 'HISTORY' | translate }}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -10,15 +10,15 @@
   <ion-list>
     <ion-item-sliding *ngFor="let record of recordsArray; let i = index;">
       <ion-item (click)="openEditPage(record.date)" detail-push>
-        <h2>{{ record.date | date }}</h2>
-        <h3>Descriptrion : {{ record.description }}</h3>
-        <h3 *ngIf="i > 0">Number of days used : {{ calculateNumberOfDaysUsed(record.date, recordsArray[i-1].date) }} days</h3>
-        <h3 *ngIf="i === 0">Number of days used : {{ calculateNumberOfDaysUsed(record.date, null) }} days</h3>
+        <h2>{{ record.date | dateTranslated }}</h2>
+        <h3>{{ 'DESCRIPTION' | translate }} : {{ record.description }}</h3>
+        <h3 *ngIf="i > 0">{{ 'NUMBER_OF_DAYS_USED' | translate }} : {{ calculateNumberOfDaysUsed(record.date, recordsArray[i-1].date) }} {{ 'DAYS' | translate }</h3>
+        <h3 *ngIf="i === 0">{{ 'NUMBER_OF_DAYS_USED' | translate }} : {{ calculateNumberOfDaysUsed(record.date, null) }} {{ 'DAYS' | translate }}</h3>
       </ion-item>
       <ion-item-options>
           <button ion-button color="danger" icon-start (click)="deleteRecord(i)">
             <ion-icon name="trash"></ion-icon>
-            Delete
+            {{ 'DELETE' | translate }}
           </button>
         </ion-item-options>
     </ion-item-sliding>

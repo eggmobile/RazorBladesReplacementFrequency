@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
 import { EditPage } from '../edit/edit';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
 
@@ -15,7 +16,10 @@ export class HistoryPage {
 
   recordsArray;
 
-  constructor(public navCtrl: NavController, private razorBladesLocalStorageService: RazorBladesLocalStorageService) {
+  constructor(
+    public navCtrl: NavController, 
+    private razorBladesLocalStorageService: RazorBladesLocalStorageService,
+    public translate: TranslateService) {
     this.razorBladesLocalStorageService.getAllRecords().then((val) => {
       this.recordsArray = val;
     });
@@ -50,5 +54,14 @@ export class HistoryPage {
     // 現在日時を渡しながら編集ページに遷移
     let dateMoment = moment(date).format('YYYY-MM-DD');
     this.navCtrl.push(EditPage, { date: dateMoment });
+  }
+
+  // 翻訳済みの日付を返す
+  getTranslatedDate(date) {
+    // 日付のフォーマットを言語によって設定する
+    return this.translate.get("DATE_FORMAT").subscribe((res: string) => {
+      let dateTranslated = moment(date).format(res);
+      return dateTranslated;
+    });
   }
 }

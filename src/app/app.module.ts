@@ -17,6 +17,9 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpModule, Http } from '@angular/http';
 
+ // カスタムパイプ
+ import { DateTranslatedPipe } from '../pipes/date-translated-pipe';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -24,7 +27,8 @@ import { HttpModule, Http } from '@angular/http';
     EditPage,
     HomePage,
     SettingsPage,
-    TabsPage
+    TabsPage,
+    DateTranslatedPipe
   ],
   imports: [
     BrowserModule,
