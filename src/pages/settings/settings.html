@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Settings
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content">
+  <ion-list>
+    <ion-list-header>
+      Replacement Notification
+    </ion-list-header>
+    <ion-item>
+      <ion-toggle checked="false" [(ngModel)]="isNotifyReplacement"></ion-toggle>
+      <ion-label>
+        Notification
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="isNotifyReplacement">
+    <ion-list-header>
+      Notification Frequency
+    </ion-list-header>
+    <ion-item>
+      <ion-label>
+        Notify every
+      </ion-label>
+      <ion-input class="frequency-input" type="number" placeholder="Put frequency" [(ngModel)]="frequencyNumber"></ion-input>
+      <ion-select [(ngModel)]="frequencyUnit">
+        <ion-option value="days">days</ion-option>
+        <ion-option value="weeks" selected>weeks</ion-option>
+        <ion-option value="months">months</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Time to notify
+      </ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="frequencyTime"></ion-datetime>
+    </ion-item>
+    <!-- 曜日指定のとき表示 -->
+    <ion-item *ngIf="frequencyUnit === 'weeks'">
+      <ion-label>
+        Day to notify
+      </ion-label>
+      <ion-select [(ngModel)]="frequencyWeeklyDay">
+        <ion-option value="Sunday">Sunday</ion-option>
+        <ion-option value="Monday">Monday</ion-option>
+        <ion-option value="Tuesday">Tuesday</ion-option>
+        <ion-option value="Wednesday">Wednesday</ion-option>
+        <ion-option value="Thursday">Thursday</ion-option>
+        <ion-option value="Friday">Friday</ion-option>
+        <ion-option value="Saturday">Saturday</ion-option>
+      </ion-select>
+    </ion-item>
+    <!-- 月指定のとき表示 -->
+    <ion-item *ngIf="frequencyUnit === 'months'">
+      <ion-label>
+        Date to notify
+      </ion-label>
+      <ion-datetime displayFormat="D" pickerFormat="D" [(ngModel)]="frequencyMonthlyDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>
+            Next notification
+        </ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD hh:mm" pickerFormat="YYYY-MM-DD hh:mm" [(ngModel)]="nextNotificationDateAndTime"></ion-datetime>
+      </ion-item>
+  </ion-list>
+</ion-content>

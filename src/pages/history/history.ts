@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
+import { EditPage } from '../edit/edit';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
 
@@ -42,5 +43,12 @@ export class HistoryPage {
     this.razorBladesLocalStorageService.deleteRecord(index).then((val) => {
       this.recordsArray = val;
     });
+  }
+
+  // 編集ページに遷移
+  openEditPage(date) {
+    // 現在日時を渡しながら編集ページに遷移
+    let dateMoment = moment(date).format('YYYY-MM-DD');
+    this.navCtrl.push(EditPage, { date: dateMoment });
   }
 }

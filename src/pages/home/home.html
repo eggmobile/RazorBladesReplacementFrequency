@@ -10,10 +10,24 @@
     <h2>{{ numberOfDaysUsed }} days</h2>
   </div>
   <div padding>
-      <p>Last replacement date : {{ date }}</p>
-      <p>{{ description }}</p>
+    <p *ngIf="description">Last replacement date : {{ date }}</p>
+    <p>{{ description }}</p>
   </div>
   <div padding>
     <button ion-button (click)="openEditPage()">Replace your razor blade</button>
   </div>
+
+  <p>{{ 'test1' | translate }}</p>
+  <!-- テスト -->
+  <p>{{ 'test2' | translate:tlParams }}</p>
+  <!-- テスト hoge fuga -->
+  <ion-list>
+    <ion-item>
+      <ion-label>Change language</ion-label>
+      <ion-select [(ngModel)]="currentLang" multiple="false" [selectOptions]="{ title:'test1'|translate, subTitle:'test2'|translate:tlParams }"
+        (ionChange)="onSelectLang(currentLang)">
+        <ion-option *ngFor="let availableLang of availableLangs">{{availableLang}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
 </ion-content>
