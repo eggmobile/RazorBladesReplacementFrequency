@@ -9,14 +9,14 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding *ngFor="let record of recordsArray; let i = index;">
-      <ion-item (click)="openEditPage(record.date)" detail-push>
+      <ion-item (click)="openEditPage(record.date, record.description, record.id)" detail-push>
         <h2>{{ record.date | dateTranslated }}</h2>
         <h3>{{ 'DESCRIPTION' | translate }} : {{ record.description }}</h3>
-        <h3 *ngIf="i > 0">{{ 'NUMBER_OF_DAYS_USED' | translate }} : {{ calculateNumberOfDaysUsed(record.date, recordsArray[i-1].date) }} {{ 'DAYS' | translate }</h3>
+        <h3 *ngIf="i > 0">{{ 'NUMBER_OF_DAYS_USED' | translate }} : {{ calculateNumberOfDaysUsed(record.date, recordsArray[i-1].date) }} {{ 'DAYS' | translate }}</h3>
         <h3 *ngIf="i === 0">{{ 'NUMBER_OF_DAYS_USED' | translate }} : {{ calculateNumberOfDaysUsed(record.date, null) }} {{ 'DAYS' | translate }}</h3>
       </ion-item>
       <ion-item-options>
-          <button ion-button color="danger" icon-start (click)="deleteRecord(i)">
+          <button ion-button color="danger" icon-start (click)="deleteRecordByIndex(i)">
             <ion-icon name="trash"></ion-icon>
             {{ 'DELETE' | translate }}
           </button>

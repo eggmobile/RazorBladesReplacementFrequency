@@ -12,30 +12,40 @@ export class EditPage {
 
   date;
   description;
+  id;
 
   constructor(public navCtrl: NavController, navParams: NavParams, private razorBladesLocalStorageService: RazorBladesLocalStorageService) {
-    let dateMoment = navParams.get("date");
-    this.date = dateMoment;
-    this.description = navParams.get("description");
+    this.date = navParams.get('date');
+    this.description = navParams.get('description');
+    this.id = navParams.get('id');
   }
 
   // データを追加する
   addRazorBladeData() {
-    // // 全部消す
-    // this.razorBladesLocalStorageService.clearAll();
     if (!this.description) {
       this.description = '';
     }
-    let razorBladeData = {
-      'date': this.date,
-      'description': this.description
-    };
-    console.log(razorBladeData);
-    this.razorBladesLocalStorageService.addNewRecord(razorBladeData).then((val) => {
-      if (val) {
-        // 元の画面に戻る
-        this.navCtrl.pop();
-      }
-    });
+    // idがある場合は更新、ない場合は新規追加する
+    if (this.id) {
+      // 更新する
+      this.razorBladesLocalStorageService.updateRecord(this.date, this.description, this.id).then((val) => {
+        if (val) {
+          // 元の画面に戻る
+          this.navCtrl.pop();
+        }
+      });
+    } else {
+      // 新規追加する
+      let razorBladeData = {
+        'date': this.date,
+        'description': this.description
+      };
+      this.razorBladesLocalStorageService.addNewRecord(this.date, this.description).then((val) => {
+        if (val) {
+          // 元の画面に戻る
+          this.navCtrl.pop();
+        }
+      });
+    }
   }
 }

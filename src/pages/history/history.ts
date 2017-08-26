@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
 import { EditPage } from '../edit/edit';
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
 
@@ -16,10 +15,7 @@ export class HistoryPage {
 
   recordsArray;
 
-  constructor(
-    public navCtrl: NavController, 
-    private razorBladesLocalStorageService: RazorBladesLocalStorageService,
-    public translate: TranslateService) {
+  constructor(public navCtrl: NavController, private razorBladesLocalStorageService: RazorBladesLocalStorageService) {
     this.razorBladesLocalStorageService.getAllRecords().then((val) => {
       this.recordsArray = val;
     });
@@ -43,25 +39,24 @@ export class HistoryPage {
   }
 
   // 記録を削除する
-  deleteRecord(index) {
-    this.razorBladesLocalStorageService.deleteRecord(index).then((val) => {
+  deleteRecordByIndex(index) {
+    this.razorBladesLocalStorageService.deleteRecordByIndex(index).then((val) => {
       this.recordsArray = val;
     });
   }
 
   // 編集ページに遷移
-  openEditPage(date) {
-    // 現在日時を渡しながら編集ページに遷移
+  openEditPage(date, description, id) {
     let dateMoment = moment(date).format('YYYY-MM-DD');
-    this.navCtrl.push(EditPage, { date: dateMoment });
+    this.navCtrl.push(EditPage, { date: dateMoment, description: description, id: id });
   }
 
-  // 翻訳済みの日付を返す
-  getTranslatedDate(date) {
-    // 日付のフォーマットを言語によって設定する
-    return this.translate.get("DATE_FORMAT").subscribe((res: string) => {
-      let dateTranslated = moment(date).format(res);
-      return dateTranslated;
-    });
-  }
+  // // 翻訳済みの日付を返す
+  // getTranslatedDate(date) {
+  //   // 日付のフォーマットを言語によって設定する
+  //   return this.translate.get("DATE_FORMAT").subscribe((res: string) => {
+  //     let dateTranslated = moment(date).format(res);
+  //     return dateTranslated;
+  //   });
+  // }
 }

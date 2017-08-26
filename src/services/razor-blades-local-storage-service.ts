@@ -8,11 +8,18 @@ export class RazorBladesLocalStorageService {
   constructor(private storage: Storage) {
   }
   // データを新規に追加する
-  addNewRecord(dataObject): any {
+  addNewRecord(date, description): any {
+    let dataObject = {
+      'date': date,
+      'description': description,
+      'id': null
+    }
+    console.log("aaaaaaa");
     // storage.set()でストレージにkey, value(JSON)の形式で格納する
     let replacementData = [];
     return this.storage.get('replacementData').then(
       (val) => {
+        console.log("bbbbbbbb");
         replacementData = val;
         if (replacementData) {
           // IDを取得する
@@ -34,11 +41,14 @@ export class RazorBladesLocalStorageService {
             this.storage.set('replacementData', replacementData);
           });
         } else {
+          console.log("ccccccccc");
           let incrementalNumber = 0;
           dataObject.id = incrementalNumber;
           replacementData = [dataObject];
-          // データを配列ごと記録する
+          // インクリメント番号を記録する
           this.storage.set('incrementalNumber', incrementalNumber);
+          // データを配列ごと記録する
+          this.storage.set('replacementData', replacementData);
         }
         return true;
       }, (reason) => {
@@ -48,35 +58,60 @@ export class RazorBladesLocalStorageService {
     );
   }
   // 指定データを削除する
-  deleteRecord(index): any {
+  deleteRecordByIndex(index): any {
     // ローカルストレージから配列を取得
-    return this.storage.get('replacementData').then(
-      (val) => {
-        // 配列から指定データを削除
-        val.splice(index, 1);
-        let recordsArray = val;
-        return this.storage.set('replacementData', recordsArray).then(() => {
-          // 配列を返す
-          console.log("recordsArray");
-          console.log(recordsArray);
-          return recordsArray;
-        });
+    return this.storage.get('replacementData').then((val) => {
+      // 配列から指定データを削除
+      val.splice(index, 1);
+      let recordsArray = val;
+      return this.storage.set('replacementData', recordsArray).then(() => {
+        // 配列を返す
+        console.log("recordsArray");
+        console.log(recordsArray);
+        return recordsArray;
       });
+    });
   }
   // 指定データを更新する
-  updateRecord(id): boolean {
-    // ソートしてから配列全体をローカルストレージに保存し直す
-    return true;
+  updateRecord(date, description, id): any {
+    if (!id) {
+      return false;
+    }
+    let record = {
+      'date': date,
+      'description': description,
+      'id': id
+    }
+    // ローカルストレージから配列を取得
+    return this.storage.get('replacementData').then((recordsArray) => {
+      if (recordsArray) {
+        for (var i = 0; i < recordsArray.length; i++) {
+          if (recordsArray[i].id === record.id) {
+            recordsArray[i] = record;
+            recordsArray.splice(i, 1, record);
+            this.storage.set('replacementData', recordsArray);
+            break;
+          }
+        }
+      }
+      // ソートする
+      recordsArray.sort(function (a, b) {
+        if (a.date > b.date) return -1;
+        if (a.date < b.date) return 1;
+        return 0;
+      });
+      return true;
+    });
   }
   // ローカルストレージから指定データを取得する
-  getRecord(id): object {
-    // 時間はISO8601
-    let object = {
-      'id': 0,
-      'date': '2017-08-16T14:40:10+0900',
-      'description': 'ジレット　フュージョン　5+1'
-    };
-    return object;
+  getRecordById(id): object {
+    return this.storage.get('replacementData').then((recordsArray) => {
+      if (!recordsArray) {
+        return null;
+      }
+      let specificRecord = recordsArray.filter(record => record.id === id);
+      return specificRecord;
+    });
   }
   // 全てのデータを取得する
   getAllRecords(): any {
@@ -85,10 +120,6 @@ export class RazorBladesLocalStorageService {
         return val;
       }
     );
-  }
-  // 配列を日付順にソートして保存し直す
-  sortDataByDate() {
-    // 新規追加、更新、削除を行う度に実行する
   }
   // データを初期化
   initRecords() {

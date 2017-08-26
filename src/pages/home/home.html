@@ -10,17 +10,15 @@
     <h2>{{ numberOfDaysUsed }} {{ 'DAYS' | translate }}</h2>
   </div>
   <div padding>
-    <p *ngIf="description">{{ 'LAST_REPLACEMENT_DATE' | translate }} : {{ date | dateTranslated }}</p>
+    <p>{{ 'LAST_REPLACEMENT_DATE' | translate }} : {{ date | dateTranslated }}</p>
     <p>{{ description }}</p>
   </div>
   <div padding>
     <button ion-button (click)="openEditPage()">{{ 'REPLACE_HOUR_RAZOR_BLADE' | translate }}</button>
   </div>
-
+<!-- 
   <p>{{ 'test1' | translate }}</p>
-  <!-- テスト -->
   <p>{{ 'test2' | translate:tlParams }}</p>
-  <!-- テスト hoge fuga -->
   <ion-list>
     <ion-item>
       <ion-label>Change language</ion-label>
@@ -29,5 +27,5 @@
         <ion-option *ngFor="let availableLang of availableLangs">{{availableLang}}</ion-option>
       </ion-select>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 </ion-content>
