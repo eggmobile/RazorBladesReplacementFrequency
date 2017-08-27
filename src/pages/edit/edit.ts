@@ -13,11 +13,14 @@ export class EditPage {
   date;
   description;
   id;
+  isUpdate;
 
-  constructor(public navCtrl: NavController, navParams: NavParams, private razorBladesLocalStorageService: RazorBladesLocalStorageService) {
+  constructor(public navCtrl: NavController, navParams: NavParams,
+    private razorBladesLocalStorageService: RazorBladesLocalStorageService) {
     this.date = navParams.get('date');
     this.description = navParams.get('description');
     this.id = navParams.get('id');
+    this.isUpdate = navParams.get('isUpdate');
   }
 
   // データを追加する
@@ -47,5 +50,8 @@ export class EditPage {
         }
       });
     }
+  }
+  clearAll(){
+    this.razorBladesLocalStorageService.clearAll();
   }
 }

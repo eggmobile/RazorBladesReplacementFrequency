@@ -42,7 +42,7 @@ export class RazorBladesLocalStorageService {
           });
         } else {
           console.log("ccccccccc");
-          let incrementalNumber = 0;
+          let incrementalNumber = 1;
           dataObject.id = incrementalNumber;
           replacementData = [dataObject];
           // インクリメント番号を記録する

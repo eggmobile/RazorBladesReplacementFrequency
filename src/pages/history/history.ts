@@ -48,7 +48,7 @@ export class HistoryPage {
   // 編集ページに遷移
   openEditPage(date, description, id) {
     let dateMoment = moment(date).format('YYYY-MM-DD');
-    this.navCtrl.push(EditPage, { date: dateMoment, description: description, id: id });
+    this.navCtrl.push(EditPage, { date: dateMoment, description: description, id: id, isUpdate: true });
   }
 
   // // 翻訳済みの日付を返す
