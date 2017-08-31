@@ -1,17 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
-// ローカル通知
-import { LocalNotifications } from '@ionic-native/local-notifications';
-// プラットフォーム検知
-import { Platform } from 'ionic-angular';
+import { RazorBladesLocalNotificationService } from '../../services/razor-blades-local-notification-service';
 
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
-  providers: [RazorBladesLocalStorageService, LocalNotifications]
+  providers: [RazorBladesLocalStorageService, RazorBladesLocalNotificationService]
 })
 export class SettingsPage {
 
@@ -23,33 +20,67 @@ export class SettingsPage {
   frequencyTime;
   nextNotificationDateAndTime;
 
-  constructor(public navCtrl: NavController, navParams: NavParams, 
+  constructor(public navCtrl: NavController, navParams: NavParams,
     private razorBladesLocalStorageService: RazorBladesLocalStorageService,
-    private localNotifications: LocalNotifications,
-    public plt: Platform) {
+    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService,
+    private chRef: ChangeDetectorRef) {
   }
 
-
-  // 画面遷移時に画面に表示しているデータを更新する
   ionViewWillEnter() {
-    this.razorBladesLocalStorageService.getMostRecentRecord().then((val) => {
-      this.isNotifyReplacement = false;
-      this.frequencyNumber = '3';
-      this.frequencyUnit = 'weeks';
-      this.frequencyMonthlyDate = moment().format();
-      this.frequencyWeeklyDay = moment().format('dddd');
-      this.frequencyTime = moment().format();
-      this.nextNotificationDateAndTime = moment().format();
-    });
-    this.setScheduledNotification();
+    this.getInitialData();
   }
 
-  setScheduledNotification() {
-    // Schedule a single notification
-    this.localNotifications.schedule({
-      id: 1,
-      at: new Date(new Date().getTime()),
-      text: 'Single ILocalNotification'
+  // 設定を初期化
+  getInitialData() {
+    this.razorBladesLocalStorageService.getIsNotifyReplacement().then((val => {
+      this.isNotifyReplacement = val;
+      this.chRef.detectChanges();
+    }));
+    this.razorBladesLocalStorageService.getFrequencyNumber().then((val => {
+      this.frequencyNumber = val;
+      this.chRef.detectChanges();
+    }));
+    this.razorBladesLocalStorageService.getFrequencyUnit().then((val => {
+      this.frequencyUnit = val;
+      this.chRef.detectChanges();
+    }));
+    this.razorBladesLocalStorageService.getFrequencyMonthlyDate().then((val => {
+      this.frequencyMonthlyDate = moment().startOf('year').date(val).format();
+      this.chRef.detectChanges();
+    }));
+    this.razorBladesLocalStorageService.getFrequencyWeeklyDay().then((val => {
+      this.frequencyWeeklyDay = val;
+      this.chRef.detectChanges();
+    }));
+    this.razorBladesLocalStorageService.getFrequencyTime().then((val => {
+      // 本日の日付を元にDateObjectに変更する
+      let timeObj = moment(val, 'hh:mm').format();
+      this.frequencyTime = timeObj;
+      this.chRef.detectChanges();
+    }));
+    this.getNextNotificationDateAndTime();
+    // ログを確認
+    this.razorBladesLocalStorageService.getAllStoragesAsLog();
+  }
+  // 通知予定日を取得する
+  getNextNotificationDateAndTime() {
+    this.razorBladesLocalStorageService.getNextNotificationDateAndTime().then((nextNotificationDateAndTime) => {
+      console.log(nextNotificationDateAndTime);
+      if (moment(nextNotificationDateAndTime).isValid()) {
+        this.nextNotificationDateAndTime = nextNotificationDateAndTime;
+        this.chRef.detectChanges();
+      }
     });
+  }
+
+  // 通知設定の各パラメータを登録する
+  setNotificationParam(key: string, value: any) {
+    this.razorBladesLocalNotificationService.setNotificationParam(key, value).then((nextNotificationDateAndTime)=>{
+      if (moment(nextNotificationDateAndTime).isValid()) {
+        this.nextNotificationDateAndTime = nextNotificationDateAndTime;
+        this.chRef.detectChanges();
+      }
+    });
+    this.chRef.detectChanges();
   }
 }

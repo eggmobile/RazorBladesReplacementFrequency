@@ -12,7 +12,7 @@
       {{ 'REPLACEMENT_NOTIFICATION' | translate }}
     </ion-list-header>
     <ion-item>
-      <ion-toggle checked="false" [(ngModel)]="isNotifyReplacement"></ion-toggle>
+      <ion-toggle checked="false" [(ngModel)]="isNotifyReplacement" (ngModelChange)="setNotificationParam('isNotifyReplacement', isNotifyReplacement)"></ion-toggle>
       <ion-label>
         {{ 'NOTIFICATION' | translate }}
       </ion-label>
@@ -26,8 +26,8 @@
       <ion-label>
         {{ 'NOTIFY_EVERY' | translate }}
       </ion-label>
-      <ion-input class="frequency-input" type="number" placeholder="Put frequency" [(ngModel)]="frequencyNumber"></ion-input>
-      <ion-select [(ngModel)]="frequencyUnit">
+      <ion-input class="frequency-input" type="number" placeholder="Put frequency" min="1" [(ngModel)]="frequencyNumber" (ngModelChange)="setNotificationParam('frequencyNumber', frequencyNumber)"></ion-input>
+      <ion-select [(ngModel)]="frequencyUnit" (ngModelChange)="setNotificationParam('frequencyUnit', frequencyUnit)">
         <ion-option value="days">{{ 'DAYS' | translate }}</ion-option>
         <ion-option value="weeks" selected>{{ 'WEEKS' | translate }}</ion-option>
         <ion-option value="months">{{ 'MONTHS' | translate }}</ion-option>
@@ -37,14 +37,14 @@
       <ion-label>
         {{ 'TIME_TO_NOTIFY' | translate }}
       </ion-label>
-      <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="frequencyTime"></ion-datetime>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="frequencyTime" (ngModelChange)="setNotificationParam('frequencyTime', frequencyTime)"></ion-datetime>
     </ion-item>
     <!-- 曜日指定のとき表示 -->
     <ion-item *ngIf="frequencyUnit === 'weeks'">
       <ion-label>
         {{ 'DAY_TO_NOTIFY' | translate }}
       </ion-label>
-      <ion-select [(ngModel)]="frequencyWeeklyDay">
+      <ion-select [(ngModel)]="frequencyWeeklyDay" (ngModelChange)="setNotificationParam('frequencyWeeklyDay', frequencyWeeklyDay)">
         <ion-option value="Sunday">{{ 'SUNDAY' | translate }}</ion-option>
         <ion-option value="Monday">{{ 'MONDAY' | translate }}</ion-option>
         <ion-option value="Tuesday">{{ 'TUESDAY' | translate }}</ion-option>
@@ -59,12 +59,12 @@
       <ion-label>
         {{ 'DATE_TO_NOTIFY' | translate }}
       </ion-label>
-      <ion-datetime displayFormat="D" pickerFormat="D" [(ngModel)]="frequencyMonthlyDate"></ion-datetime>
+      <ion-datetime displayFormat="D" pickerFormat="D" [(ngModel)]="frequencyMonthlyDate" (ngModelChange)="setNotificationParam('frequencyMonthlyDate', frequencyMonthlyDate)"></ion-datetime>
     </ion-item>
     <ion-item>
       {{ 'NEXT_NOTIFICATION' | translate }}
       <ion-note item-end>
-        {{ nextNotificationDateAndTime | dateTranslated }} HH:MM
+        {{ nextNotificationDateAndTime | dateTranslated }} {{ nextNotificationDateAndTime | date:'h:mm a'}}
       </ion-note>
     </ion-item>
   </ion-list>

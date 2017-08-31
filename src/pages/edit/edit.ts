@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
+import { RazorBladesLocalNotificationService } from '../../services/razor-blades-local-notification-service';
 
 @Component({
   selector: 'page-edit',
   templateUrl: 'edit.html',
-  providers: [RazorBladesLocalStorageService]
+  providers: [RazorBladesLocalStorageService, RazorBladesLocalNotificationService]
 })
 export class EditPage {
 
@@ -16,7 +17,8 @@ export class EditPage {
   isUpdate;
 
   constructor(public navCtrl: NavController, navParams: NavParams,
-    private razorBladesLocalStorageService: RazorBladesLocalStorageService) {
+    private razorBladesLocalStorageService: RazorBladesLocalStorageService,
+    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService) {
     this.date = navParams.get('date');
     this.description = navParams.get('description');
     this.id = navParams.get('id');
@@ -45,13 +47,19 @@ export class EditPage {
       };
       this.razorBladesLocalStorageService.addNewRecord(this.date, this.description).then((val) => {
         if (val) {
+          // 通知を更新する
+          this.razorBladesLocalNotificationService.calculateNextNotificationDateAndTime().then((nextNotificationDateAndTime) => {
+            // 通知をセットし直す
+            console.log(nextNotificationDateAndTime);
+            this.razorBladesLocalNotificationService.setScheduledNotification(nextNotificationDateAndTime);
+          });
           // 元の画面に戻る
           this.navCtrl.pop();
         }
       });
     }
   }
-  clearAll(){
+  clearAll() {
     this.razorBladesLocalStorageService.clearAll();
   }
 }

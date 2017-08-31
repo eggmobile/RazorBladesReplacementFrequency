@@ -51,13 +51,22 @@ export class HomePage {
     translate.onLangChange.subscribe((event: LangChangeEvent) => {
       console.log("instant=" + translate.instant("test1"));
     });
+
+    // momentJsのテスト -------------------------------------------------------
+    // 月次アラート用のテスト　月末処理について
+    let momentEndOfMonth = moment('2017-02-01');
+    // 2月に31日指定を行ったら日付はどのようになるのか。
+    // →3日分溢れて、3月3日と出力される。
+    let testOutput1 = momentEndOfMonth.date(31).format();
+    console.log('momentjs テスト出力');
+    console.log(testOutput1);
   }
 
   // 編集ページに遷移
   openEditPage() {
     // 現在日時を渡しながら編集ページに遷移
-    let date = moment().format('YYYY-MM-DD');
-    this.navCtrl.push(EditPage, { date: date });
+    let today = moment().format('YYYY-MM-DD');
+    this.navCtrl.push(EditPage, { date: today });
   }
 
   // 画面遷移時にデータを取得する

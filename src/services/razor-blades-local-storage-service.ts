@@ -14,12 +14,10 @@ export class RazorBladesLocalStorageService {
       'description': description,
       'id': null
     }
-    console.log("aaaaaaa");
     // storage.set()でストレージにkey, value(JSON)の形式で格納する
     let replacementData = [];
     return this.storage.get('replacementData').then(
       (val) => {
-        console.log("bbbbbbbb");
         replacementData = val;
         if (replacementData) {
           // IDを取得する
@@ -41,7 +39,6 @@ export class RazorBladesLocalStorageService {
             this.storage.set('replacementData', replacementData);
           });
         } else {
-          console.log("ccccccccc");
           let incrementalNumber = 1;
           dataObject.id = incrementalNumber;
           replacementData = [dataObject];
@@ -141,5 +138,115 @@ export class RazorBladesLocalStorageService {
   // 全消去
   clearAll() {
     this.storage.clear();
+  }
+  // 繰り返し通知時間
+  setFrequencyTime(hh: string, mm: string) {
+    let timeString = hh + ':' + mm;
+    this.storage.set('frequencyTime', timeString);
+  }
+  getFrequencyTime(): any {
+    return this.storage.get('frequencyTime').then((val) => {
+      let result = val;
+      if (!val) {
+        result = '07:00';
+        this.setFrequencyTime('07', '00');
+      }
+      return result;
+    });
+  }
+  // 繰り返しタイプ
+  // days, weeks, months
+  setFrequencyUnit(frequencyUnit: string) {
+    this.storage.set('frequencyUnit', frequencyUnit);
+  }
+  getFrequencyUnit(): any {
+    return this.storage.get('frequencyUnit').then((val) => {
+      let result = val;
+      if (!val) {
+        result = 'weeks';
+        this.setFrequencyUnit(result);
+      }
+      return result;
+    });
+  }
+  // 繰り返し数
+  setFrequencyNumber(frequencyNumber: number) {
+    this.storage.set('frequencyNumber', frequencyNumber);
+  }
+  getFrequencyNumber(): any {
+    return this.storage.get('frequencyNumber').then((val) => {
+      let result = val;
+      if (!val) {
+        result = '3';
+        this.setFrequencyNumber(result);
+      }
+      return result;
+    });
+  }
+  // 繰り返し週　曜日
+  setFrequencyWeeklyDay(frequencyWeeklyDay: number) {
+    this.storage.set('frequencyWeeklyDay', frequencyWeeklyDay);
+  }
+  // 繰り返し週　曜日
+  getFrequencyWeeklyDay(): any {
+    return this.storage.get('frequencyWeeklyDay').then((val) => {
+      let result = val;
+      if (!val) {
+        result = 'Sunday';
+        this.setFrequencyWeeklyDay(result);
+      }
+      return result;
+    });
+  }
+  // 繰り返し月　日  
+  setFrequencyMonthlyDate(frequencyMonthlyDate) {
+    this.storage.set('frequencyMonthlyDate', frequencyMonthlyDate);
+  }
+  getFrequencyMonthlyDate(): any {
+    return this.storage.get('frequencyMonthlyDate').then((val) => {
+      let result = val;
+      if (!val) {
+        result = 1;
+        this.setFrequencyMonthlyDate(result);
+      }
+      return result;
+    });
+  }
+  // 通知を行うかどうか 
+  setIsNotifyReplacement(isNotifyReplacement: boolean) {
+    this.storage.set('isNotifyReplacement', isNotifyReplacement);
+  }
+  getIsNotifyReplacement(): any {
+    return this.storage.get('isNotifyReplacement').then((val) => {
+      let result = val;
+      if (!val) {
+        result = false;
+        this.setIsNotifyReplacement(result);
+      }
+      return result;
+    });
+  }
+
+  // 次回通知日時
+  setNextNotificationDateAndTime(nextNotificationDateAndTime: string) {
+    this.storage.set('nextNotificationDateAndTime', nextNotificationDateAndTime);
+  }
+  getNextNotificationDateAndTime(): any {
+    return this.storage.get('nextNotificationDateAndTime').then((val) => {
+      let result = val;
+      if (!val) {
+        result = null;
+      }
+      return result;
+    });
+  }
+
+  // デバッグ用
+  getAllStoragesAsLog() {
+    this.storage.forEach((value, key, index) => {
+      console.log("This is the value", value);
+      console.log("from the key", key);
+      console.log("Index is", index);
+    })
   }
 }
