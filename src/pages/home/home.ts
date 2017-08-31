@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EditPage } from '../edit/edit';
 import * as moment from 'moment';
@@ -30,7 +30,8 @@ export class HomePage {
     public navCtrl: NavController,
     private razorBladesLocalStorageService: RazorBladesLocalStorageService,
     public translate: TranslateService,
-    private http: Http) {
+    private http: Http,
+    private chRef: ChangeDetectorRef) {
     this.date = null;
     this.description = '';
     this.numberOfDaysUsed = 0;
@@ -71,10 +72,12 @@ export class HomePage {
 
   // 画面遷移時にデータを取得する
   ionViewWillEnter() {
+    console.log('画面表示');
     this.razorBladesLocalStorageService.getMostRecentRecord().then((val) => {
       this.date = val.date;
       this.description = val.description;
       this.numberOfDaysUsed = this.calculateNumberOfDaysUsed(this.date);
+      this.chRef.detectChanges();
     });
   }
 

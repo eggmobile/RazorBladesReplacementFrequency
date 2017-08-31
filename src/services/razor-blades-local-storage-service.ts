@@ -21,7 +21,7 @@ export class RazorBladesLocalStorageService {
         replacementData = val;
         if (replacementData) {
           // IDを取得する
-          this.storage.get('incrementalNumber').then((val) => {
+          return this.storage.get('incrementalNumber').then((val) => {
             // IDをインクリメントして記録する
             let incrementalNumber = val + 1;
             dataObject.id = incrementalNumber;
@@ -37,6 +37,7 @@ export class RazorBladesLocalStorageService {
             });
             // データを配列ごと記録する
             this.storage.set('replacementData', replacementData);
+            return true;
           });
         } else {
           let incrementalNumber = 1;
@@ -46,8 +47,8 @@ export class RazorBladesLocalStorageService {
           this.storage.set('incrementalNumber', incrementalNumber);
           // データを配列ごと記録する
           this.storage.set('replacementData', replacementData);
+          return true;
         }
-        return true;
       }, (reason) => {
         this.initRecords();
         return false;

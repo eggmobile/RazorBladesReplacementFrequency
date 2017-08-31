@@ -17,12 +17,12 @@ export class RazorBladesLocalNotificationService {
   // 通知は複数持たない。設定の度に一度クリアする。
   setScheduledNotification(nextNotificationDateAndTime: string) {
     // 一度スケジュールを全部消す
-    this.localNotifications.clearAll().then(()=>{
+    this.localNotifications.clearAll().then(() => {
       // 通知を全部消す
       let scheduleDate = moment(nextNotificationDateAndTime).toDate();
       // 新規スケジュールを追加
-      this.razorBladesLocalStorageService.getIsNotifyReplacement().then((val)=>{
-        if(val){
+      this.razorBladesLocalStorageService.getIsNotifyReplacement().then((val) => {
+        if (val) {
           this.localNotifications.schedule({
             id: 1,
             at: scheduleDate,
@@ -87,7 +87,12 @@ export class RazorBladesLocalNotificationService {
               // 日次のとき
               // baseDateにfrequencyNumber分の日数を加算する
               return this.razorBladesLocalStorageService.getFrequencyNumber().then((frequencyNumber) => {
-                let nextNotificationDateAndTime = baseDate.add(frequencyNumber, 'days').format();
+                let nextNotificationDateAndTimeMoment = baseDate.add(frequencyNumber, 'days');
+                // nextNotificationDateAndTimeが過去の場合、未来日になるまでfrequencyNumber日分の加算を繰り返す
+                while (moment().isAfter(nextNotificationDateAndTimeMoment)) {
+                  nextNotificationDateAndTimeMoment = baseDate.add(frequencyNumber, 'days');
+                }
+                let nextNotificationDateAndTime = nextNotificationDateAndTimeMoment.format();
                 this.razorBladesLocalStorageService.setNextNotificationDateAndTime(nextNotificationDateAndTime);
                 return nextNotificationDateAndTime;
               });
@@ -100,7 +105,12 @@ export class RazorBladesLocalNotificationService {
                 let baseDateDesignatedWeek = baseDate.day(weekNum);
                 // 指定の数だけ週数を加算
                 return this.razorBladesLocalStorageService.getFrequencyNumber().then((frequencyNumber) => {
-                  let nextNotificationDateAndTime = baseDateDesignatedWeek.add(frequencyNumber, 'weeks').format();
+                  let nextNotificationDateAndTimeMoment = baseDateDesignatedWeek.add(frequencyNumber, 'weeks');
+                  // nextNotificationDateAndTimeが過去の場合、未来日になるまでfrequencyNumber週分の加算を繰り返す
+                  while (moment().isAfter(nextNotificationDateAndTimeMoment)) {
+                    nextNotificationDateAndTimeMoment = baseDateDesignatedWeek.add(frequencyNumber, 'weeks');
+                  }
+                  let nextNotificationDateAndTime = nextNotificationDateAndTimeMoment.format();
                   this.razorBladesLocalStorageService.setNextNotificationDateAndTime(nextNotificationDateAndTime);
                   return nextNotificationDateAndTime;
                 });
@@ -108,13 +118,8 @@ export class RazorBladesLocalNotificationService {
             case 'months':
               // 月次のとき
               return this.razorBladesLocalStorageService.getFrequencyMonthlyDate().then((frequencyMonthlyDateNum) => {
-                // 今月に通知を行うか、翌月に通知を行うか確認する
-                // isNotifyThisMonthが正なら今月通知を行う
                 let isNotifyThisMonth = frequencyMonthlyDateNum - baseDate.date();
                 let startOfNotificationMonth = baseDate.startOf('month').hours(frequencyTimeHh).minutes(frequencyTimeMm).seconds(0).milliseconds(0);
-                if (isNotifyThisMonth <= 0) {
-                  startOfNotificationMonth.add(1, 'months');
-                }
                 // 通知日が当月に存在するか確認する(2月31日となってしまう場合は、2月末に変更する)
                 if (frequencyMonthlyDateNum >= 29) {
                   let endOfDateInNotificationMonthNum = startOfNotificationMonth.endOf('date').date();
@@ -125,7 +130,12 @@ export class RazorBladesLocalNotificationService {
                 }
                 // 指定の数だけ月数を加算
                 return this.razorBladesLocalStorageService.getFrequencyNumber().then((frequencyNumber) => {
-                  let nextNotificationDateAndTime = startOfNotificationMonth.date(frequencyMonthlyDateNum).add(frequencyNumber, 'months').format();
+                  let nextNotificationDateAndTimeMoment = startOfNotificationMonth.date(frequencyMonthlyDateNum).add(frequencyNumber, 'months');
+                  // nextNotificationDateAndTimeが過去の場合、未来日になるまでfrequencyNumber月分の加算を繰り返す
+                  while (moment().isAfter(nextNotificationDateAndTimeMoment)) {
+                    nextNotificationDateAndTimeMoment = startOfNotificationMonth.date(frequencyMonthlyDateNum).add(frequencyNumber, 'months');
+                  }
+                  let nextNotificationDateAndTime = nextNotificationDateAndTimeMoment.format();
                   this.razorBladesLocalStorageService.setNextNotificationDateAndTime(nextNotificationDateAndTime);
                   return nextNotificationDateAndTime;
                 });

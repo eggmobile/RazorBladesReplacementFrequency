@@ -4,18 +4,20 @@ import * as moment from 'moment';
 import { EditPage } from '../edit/edit';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
-
+import { RazorBladesLocalNotificationService } from '../../services/razor-blades-local-notification-service';
 
 @Component({
   selector: 'page-history',
   templateUrl: 'history.html',
-  providers: [RazorBladesLocalStorageService]
+  providers: [RazorBladesLocalStorageService, RazorBladesLocalNotificationService]
 })
 export class HistoryPage {
 
   recordsArray;
 
-  constructor(public navCtrl: NavController, private razorBladesLocalStorageService: RazorBladesLocalStorageService) {
+  constructor(public navCtrl: NavController, 
+    private razorBladesLocalStorageService: RazorBladesLocalStorageService,
+    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService) {
     this.razorBladesLocalStorageService.getAllRecords().then((val) => {
       this.recordsArray = val;
     });
@@ -42,6 +44,12 @@ export class HistoryPage {
   deleteRecordByIndex(index) {
     this.razorBladesLocalStorageService.deleteRecordByIndex(index).then((val) => {
       this.recordsArray = val;
+      // 通知を更新する
+      // 通知を更新する
+      this.razorBladesLocalNotificationService.calculateNextNotificationDateAndTime().then((nextNotificationDateAndTime) => {
+        // 通知をセットし直す
+        this.razorBladesLocalNotificationService.setScheduledNotification(nextNotificationDateAndTime);
+      });
     });
   }
 
@@ -50,13 +58,4 @@ export class HistoryPage {
     let dateMoment = moment(date).format('YYYY-MM-DD');
     this.navCtrl.push(EditPage, { date: dateMoment, description: description, id: id, isUpdate: true });
   }
-
-  // // 翻訳済みの日付を返す
-  // getTranslatedDate(date) {
-  //   // 日付のフォーマットを言語によって設定する
-  //   return this.translate.get("DATE_FORMAT").subscribe((res: string) => {
-  //     let dateTranslated = moment(date).format(res);
-  //     return dateTranslated;
-  //   });
-  // }
 }
