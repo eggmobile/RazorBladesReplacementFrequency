@@ -4,13 +4,16 @@ import * as moment from 'moment';
 import { RazorBladesLocalStorageService } from './razor-blades-local-storage-service';
 // ローカル通知
 import { LocalNotifications } from '@ionic-native/local-notifications';
+// 翻訳
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class RazorBladesLocalNotificationService {
 
   constructor(
     private razorBladesLocalStorageService: RazorBladesLocalStorageService,
-    private localNotifications: LocalNotifications) {
+    private localNotifications: LocalNotifications,
+    private translateService: TranslateService) {
   }
 
   // 通知をスケジュールする
@@ -22,13 +25,19 @@ export class RazorBladesLocalNotificationService {
       let scheduleDate = moment(nextNotificationDateAndTime).toDate();
       // 新規スケジュールを追加
       this.razorBladesLocalStorageService.getIsNotifyReplacement().then((val) => {
-        if (val) {
-          this.localNotifications.schedule({
-            id: 1,
-            at: scheduleDate,
-            text: "It's the time to change your razor blade."
-          });
-        }
+        this.translateService.get('ITS_THE_TIME_TO_CHANGE_YOUR_RAZOR_BLADE').subscribe(
+          value => {
+            // value is our translated string
+            let notificationMessage = value;
+            if (val) {
+              this.localNotifications.schedule({
+                id: 1,
+                at: scheduleDate,
+                text: notificationMessage
+              });
+            }
+          }
+        )
       });
     });
   }
