@@ -9,7 +9,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../services/razor-blades-local-storage-service';
 import { RazorBladesLocalNotificationService } from '../services/razor-blades-local-notification-service';
-
+// FirebaseAnalytics
+import { FirebaseAnalytics } from '@ionic-native/firebase-analytics';
 
 
 @Component({
