@@ -9,8 +9,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../services/razor-blades-local-storage-service';
 import { RazorBladesLocalNotificationService } from '../services/razor-blades-local-notification-service';
-
-
+// Google Analytics
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 @Component({
   templateUrl: 'app.html',
@@ -25,7 +25,10 @@ export class MyApp {
     splashScreen: SplashScreen,
     private translate: TranslateService,
     private localNotifications: LocalNotifications,
-    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService) {
+    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService,
+    private ga: GoogleAnalytics
+  ) {
+    // ngx-translate
     console.log("getBrowserCultureLang=" + translate.getBrowserCultureLang()); // en-US
     console.log("getBrowserLang=" + translate.getBrowserLang());
 
@@ -36,6 +39,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+
       // 通知のコールバック
       this.localNotifications.on('click', (notification, state) => {
         // 通知を更新する
@@ -44,6 +48,16 @@ export class MyApp {
           this.razorBladesLocalNotificationService.setScheduledNotification(nextNotificationDateAndTime);
         });
       })
+
+      // Google Analytics設定
+      this.ga.startTrackerWithId('UA-00000000-0')
+      .then(() => {
+        console.log('Google analytics is ready now');
+        //the component is ready and you can call any method here
+        this.ga.debugMode();
+        this.ga.setAllowIDFACollection(true);
+      })
+      .catch(e => console.log('Error starting GoogleAnalytics', e));     
     });
   }
 }

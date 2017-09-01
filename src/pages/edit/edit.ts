@@ -3,11 +3,14 @@ import { NavController, NavParams } from 'ionic-angular';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
 import { RazorBladesLocalNotificationService } from '../../services/razor-blades-local-notification-service';
+// AdMob
+import { AdMobPro } from '@ionic-native/admob-pro';
+import { Platform } from 'ionic-angular';
 
 @Component({
   selector: 'page-edit',
   templateUrl: 'edit.html',
-  providers: [RazorBladesLocalStorageService, RazorBladesLocalNotificationService]
+  providers: [RazorBladesLocalStorageService, RazorBladesLocalNotificationService, AdMobPro]
 })
 export class EditPage {
 
@@ -16,13 +19,18 @@ export class EditPage {
   id;
   isUpdate;
 
-  constructor(public navCtrl: NavController, navParams: NavParams,
+  constructor(
+    public navCtrl: NavController, navParams: NavParams,
     private razorBladesLocalStorageService: RazorBladesLocalStorageService,
-    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService) {
+    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService,
+    private admob: AdMobPro,
+    private platform: Platform
+  ) {
     this.date = navParams.get('date');
     this.description = navParams.get('description');
     this.id = navParams.get('id');
     this.isUpdate = navParams.get('isUpdate');
+    this.initAd();
   }
 
   // データを追加する
@@ -63,8 +71,35 @@ export class EditPage {
     this.razorBladesLocalNotificationService.calculateNextNotificationDateAndTime().then((nextNotificationDateAndTime) => {
       // 通知をセットし直す
       this.razorBladesLocalNotificationService.setScheduledNotification(nextNotificationDateAndTime);
+      // インタースティシャル広告を出す
+      if (this.admob) this.admob.showInterstitial();
       // 元の画面に戻る
       this.navCtrl.pop();
     });
+  }
+
+  ionViewDidLoad() {
+    this.admob.onAdDismiss()
+      .subscribe(() => { console.log('User dismissed ad'); });
+  }
+
+  // インタースティシャル広告を表示する
+  initAd() {
+    let adId;
+    if (this.platform.is('android')) {
+      adId = 'ca-app-pub-1851198495819784/1364018682';
+      // adId = { // for Android
+      //   banner: 'ca-app-pub-1851198495819784/8013187519',
+      //   interstitial: 'ca-app-pub-1851198495819784/1364018682'
+      // };
+    } else if (this.platform.is('ios')) {
+      adId = 'ca-app-pub-1851198495819784/3665860344';
+      // adId = { // for iOS
+      //   banner: 'ca-app-pub-1851198495819784/9764364834',
+      //   interstitial: 'ca-app-pub-1851198495819784/3665860344'
+      // };
+    }
+    // 広告を準備しとく
+    this.admob.prepareInterstitial({ adId: adId, autoShow: false });
   }
 }
