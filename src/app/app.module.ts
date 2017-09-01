@@ -13,7 +13,6 @@ import { SettingsPage } from '../pages/settings/settings';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LocalNotifications } from '@ionic-native/local-notifications';
-import { FirebaseAnalytics } from '@ionic-native/firebase-analytics';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -58,7 +57,6 @@ import { HttpModule, Http } from '@angular/http';
     StatusBar,
     SplashScreen,
     LocalNotifications,
-    FirebaseAnalytics,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
