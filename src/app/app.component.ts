@@ -9,7 +9,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../services/razor-blades-local-storage-service';
 import { RazorBladesLocalNotificationService } from '../services/razor-blades-local-notification-service';
-
+// Firebase
+import { FirebaseAnalytics } from '@ionic-native/firebase-analytics';
 
 @Component({
   templateUrl: 'app.html',
@@ -24,7 +25,8 @@ export class MyApp {
     splashScreen: SplashScreen,
     private translate: TranslateService,
     private localNotifications: LocalNotifications,
-    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService) {
+    private razorBladesLocalNotificationService: RazorBladesLocalNotificationService,
+    private firebaseAnalytics: FirebaseAnalytics) {
     console.log("getBrowserCultureLang=" + translate.getBrowserCultureLang()); // en-US
     console.log("getBrowserLang=" + translate.getBrowserLang());
 
@@ -43,6 +45,10 @@ export class MyApp {
           this.razorBladesLocalNotificationService.setScheduledNotification(nextNotificationDateAndTime);
         });
       })
+      // Firebase Analyticsのテスト
+      this.firebaseAnalytics.logEvent('device_ready', { page: "App" })
+        .then((res: any) => console.log(res))
+        .catch((error: any) => console.error(error));
     });
   }
 }
