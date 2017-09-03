@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "342920826584",
+    "firebase_url": "https://replacerazor-5b30f.firebaseio.com",
+    "project_id": "replacerazor-5b30f",
+    "storage_bucket": "replacerazor-5b30f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342920826584:android:a292c29707ca211e",
+        "android_client_info": {
+          "package_name": "com.hugkey.RazorBladeReplacementFrequency"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342920826584-n19hem4nmpdjs50tekssivgm6lv25pma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXzOFoPvVDB6Dk5McU4mv8bTbrVgtvR14"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

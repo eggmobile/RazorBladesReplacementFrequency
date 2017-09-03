@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.hugkey.RazorBladeReplacementFrequency" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Replace Razor</name>
+    <name>ReplaceRazor</name>
     <description>When did you replace your razor blade? This app notices you when you have to replace it.</description>
     <author email="eggmobile@gmail.com" href="http://www.hugkey.com/">eggmobile</author>
     <content src="index.html" />
