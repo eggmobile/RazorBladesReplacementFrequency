@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hugkey.RazorBladeReplacementFrequency" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.hugkey.RazorBladeReplacementFrequency" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ReplaceRazor</name>
     <description>When did you replace your razor blade? This app notices you when you have to replace it.</description>
     <author email="eggmobile@gmail.com" href="http://www.hugkey.com/">eggmobile</author>
@@ -87,6 +87,5 @@
     <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <engine name="android" spec="~6.2.3" />
     <engine name="ios" spec="~4.4.0" />
 </widget>
