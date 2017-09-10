@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding text-center>
+<ion-content margin-top margin-bottom text-center class="home-content">
   <div padding>
     <h3>{{ 'NUMBER_OF_DAYS_USED' | translate }}</h3>
     <h2>{{ numberOfDaysUsed }} {{ 'DAYS' | translate }}</h2>
@@ -14,9 +14,20 @@
     <p>{{ description }}</p>
   </div>
   <div padding>
-    <button ion-button (click)="openEditPage()">{{ 'REPLACE_HOUR_RAZOR_BLADE' | translate }}</button>
+    <button ion-button class="replace-button" (click)="openEditPage()" [ngClass]="{'animation-trembling': tremblingButton, 'animation-removing': removingButton}">{{ 'REPLACE_HOUR_RAZOR_BLADE' | translate }}</button>
   </div>
-<!-- 
+  <div class="holder-container" margin-right>
+    <img class="holder-image" src="assets/images/holder-light.png">
+  </div>
+  <div class="glitter-holder">
+      <img class="glittering-image glitter01" src="assets/images/glittering.png" [ngClass]="{'animation-glittering': glittering}">
+      <img class="glittering-image glitter02" src="assets/images/glittering.png" [ngClass]="{'animation-glittering': glittering}">
+      <img class="glittering-image glitter03" src="assets/images/glittering.png" [ngClass]="{'animation-glittering': glittering}">
+      <img class="glittering-image glitter04" src="assets/images/glittering.png" [ngClass]="{'animation-glittering': glittering}">
+      <img class="glittering-image glitter05" src="assets/images/glittering.png" [ngClass]="{'animation-glittering': glittering}">
+  </div>
+
+  <!-- 
   <p>{{ 'test1' | translate }}</p>
   <p>{{ 'test2' | translate:tlParams }}</p>
   <ion-list>

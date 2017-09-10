@@ -1,3 +1,93 @@
 page-home {
-
+  button.replace-button {
+    width: 250px;
+    height: 80px;
+    border-radius: 15px;
+    // animation: trembling .3s infinite;
+    // animation: removing .5s forwards;
+    &.animation-trembling {
+      animation: trembling .3s infinite;
+    }
+    &.animation-removing {
+      animation: removing .5s forwards;
+    }
+  }
+  img.holder-image {
+    margin-top: -70px;
+    width: 200px;
+  }
+  div.holder-container {
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    height: 120px;
+  }
+  img.glittering-image {
+    position: fixed;
+    width: 100px;
+    z-index: 100;
+    top: 230px;
+    display: none;
+    &.glitter01 {
+      width: 100px;
+      top: 190px;
+      left: 10%;
+      transform-origin: 50% 50%;
+      &.animation-glittering {
+        display: inline-block;
+        animation: glittering .55s 18 forwards;     
+      }
+    }
+    &.glitter02 {
+      width: 80px;
+      top: 250px;
+      left: 60%;
+      &.animation-glittering {
+        display: inline-block;
+          animation: glittering .5s 20 forwards;
+      }
+    }
+    &.glitter03 {
+      width: 50px;
+      top: 350px;
+      left: 40%;
+      &.animation-glittering {
+        display: inline-block;
+        animation: glittering .45s 22 forwards;
+      }
+    }
+    &.glitter04 {
+      width: 30px;
+      top: 360px;
+      left: 80%;
+      &.animation-glittering {
+        display: inline-block;
+        animation: glittering .4s 25 forwards;
+      }
+    }
+    &.glitter05 {
+      width: 20px;
+      top: 350px;
+      left: 8%;
+      &.animation-glittering {
+        display: inline-block;
+        animation: glittering .35s 29 forwards;
+      }
+    }
+  }
+  @keyframes trembling {
+    0% {transform: translate(0px, 0px) rotateZ(0deg)}
+    25% {transform: translate(2px, 2px) rotateZ(1deg)}
+    50% {transform: translate(0px, 2px) rotateZ(0deg)}
+    75% {transform: translate(2px, 0px) rotateZ(-1deg)}
+    100% {transform: translate(0px, 0px) rotateZ(0deg)}
+  }
+  @keyframes removing {
+    100% {transform: translateY(-500px);}
+  }
+  @keyframes glittering {
+    0%{transform: scale(0.7); opacity: 0;}
+    50% {transform: scale(1); opacity: 0.8;}
+    100% {transform: scale(0.7); opacity: 0;}
+  }
 }

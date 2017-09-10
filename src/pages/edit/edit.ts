@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 // カスタムサービス
 import { RazorBladesLocalStorageService } from '../../services/razor-blades-local-storage-service';
 import { RazorBladesLocalNotificationService } from '../../services/razor-blades-local-notification-service';
@@ -24,7 +24,8 @@ export class EditPage {
     private razorBladesLocalStorageService: RazorBladesLocalStorageService,
     private razorBladesLocalNotificationService: RazorBladesLocalNotificationService,
     private admob: AdMobPro,
-    private platform: Platform
+    private platform: Platform,
+    public viewCtrl: ViewController
   ) {
     this.date = navParams.get('date');
     this.description = navParams.get('description');
@@ -44,7 +45,7 @@ export class EditPage {
       this.razorBladesLocalStorageService.updateRecord(this.date, this.description, this.id).then((val) => {
         if (val) {
           // 通知を更新して元の画面に戻る
-          this.updateNotificationThenBackPage();
+          this.updateNotificationThenBackPage(false);
         }
       });
     } else {
@@ -56,7 +57,7 @@ export class EditPage {
       this.razorBladesLocalStorageService.addNewRecord(this.date, this.description).then((val) => {
         if (val) {
           // 通知を更新して元の画面に戻る
-          this.updateNotificationThenBackPage();
+          this.updateNotificationThenBackPage(true);
         }
       });
     }
@@ -66,7 +67,7 @@ export class EditPage {
     this.razorBladesLocalStorageService.clearAll();
   }
   // 通知を更新して元の画面に戻る
-  updateNotificationThenBackPage() {
+  updateNotificationThenBackPage(isNewData:boolean) {
     // 通知を更新する
     this.razorBladesLocalNotificationService.calculateNextNotificationDateAndTime().then((nextNotificationDateAndTime) => {
       // 通知をセットし直す
@@ -74,13 +75,23 @@ export class EditPage {
       // インタースティシャル広告を出す
       if (this.admob) this.admob.showInterstitial();
       // 元の画面に戻る
-      this.navCtrl.pop();
+      if(isNewData){
+        this.dismiss(isNewData);
+        return;
+      }else{
+        this.navCtrl.pop();
+        return;
+      }
     });
   }
 
   ionViewDidLoad() {
     this.admob.onAdDismiss()
       .subscribe(() => { console.log('User dismissed ad'); });
+  }
+
+  ionViewWillEnter() {
+    this.viewCtrl.showBackButton(false);
   }
 
   // インタースティシャル広告を表示する
@@ -101,5 +112,11 @@ export class EditPage {
     }
     // 広告を準備しとく
     this.admob.prepareInterstitial({ adId: adId, autoShow: false });
+  }
+
+  // モーダルを閉じる
+  dismiss(isReplacedRazor) {
+    let data = { 'isReplacedRazor': isReplacedRazor };
+    this.viewCtrl.dismiss(data);
   }
 }
