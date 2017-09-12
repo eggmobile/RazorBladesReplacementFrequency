@@ -1,4 +1,9 @@
 page-home {
+  .home-content {
+    .scroll-content{
+      overflow-y: hidden;      
+    }
+  }
   button.replace-button {
     width: 250px;
     height: 80px;
